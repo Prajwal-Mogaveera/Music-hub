@@ -1,0 +1,13 @@
+# Global ignores for all apps
+node_modules/
+dist/
+build/
+
+# Ignore specific files or folders in micro-apps
+core-app/coverage
+music-library-mf/coverage
+
+
+# Optional: ignore logs, coverage, etc.
+*.log
+coverage/
