@@ -8,6 +8,5 @@ core-app/coverage
 music-library-mf/coverage
 
 
-# Optional: ignore logs, coverage, etc.
-*.log
-coverage/
+
+
