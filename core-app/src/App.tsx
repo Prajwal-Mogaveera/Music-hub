@@ -4,6 +4,7 @@ import Login from "./Components/Login/Login"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import userContext from "./Context/userContext"
 import styles from "./App.module.css"
+import ErrorBoundaryComponent from "./Components/ErrorBoundaryComponent/ErrorBoundaryComponent"
 
 type MusicLibraryProps = {
   showAddSongForm: boolean
@@ -14,7 +15,7 @@ const MusicLibrary = lazy(() => import("musicLibrary/MusicLibrary")) as React.La
 
 function App() {
   const context = useContext(userContext)
-  const { user, showAddSong, setShowAddSong } = context
+  const { user, notifySessionEnd, showAddSong, setShowAddSong } = context
 
   useEffect(() => {
     const handleCloseAddSong = () => {
@@ -27,16 +28,26 @@ function App() {
     }
   }, [])
 
+  useEffect(() => {
+    if (notifySessionEnd) {
+      localStorage.removeItem("token")
+      alert("Session expired. Please login again.")
+      window.location.href = "/login"
+    }
+  }, [notifySessionEnd])
+
   return (
     <>
       <Router>
-        <Navbar />
-        <Suspense fallback={<div className={styles.fallbackUiStyle}>Loading songs for you...</div>}>
-          <Routes>
-            <Route path="/" element={<MusicLibrary showAddSongForm={showAddSong} userRole={user?.role || "user"} />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </Suspense>
+        <ErrorBoundaryComponent>
+          <Navbar />
+          <Suspense fallback={<div className={styles.fallbackUiStyle}>Loading songs for you...</div>}>
+            <Routes>
+              <Route path="/" element={<MusicLibrary showAddSongForm={showAddSong} userRole={user?.role || "user"} />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundaryComponent>
       </Router>
     </>
   )

@@ -1,0 +1,11 @@
+.errorContainer {
+  height: 70vh;
+}
+
+.btn {
+  background-color: gray;
+  color: white;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 2px;
+}

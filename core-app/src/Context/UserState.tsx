@@ -21,9 +21,10 @@ type user = {
 function UserState({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<userType>({ name: "", role: "user", email: "" })
   const [showAddSong, setShowAddSong] = useState<boolean>(false)
+  const [notifySessionEnd, setNotifySessionEnd] = useState<boolean>(false)
 
   const handleLogin = (email: string, password: string) => {
-    const findUser = users?.find((user: user) => user.email === email && user.password === password)
+    const findUser = users?.find((user: user) => user.email === email.toLowerCase() && user.password === password)
     if (findUser) {
       const payload = { name: findUser.name, role: findUser.role, email: findUser.email }
       const token = jwtEncode(payload, secret)
@@ -44,15 +45,19 @@ function UserState({ children }: { children: React.ReactNode }) {
   const handleSettingUser = () => {
     const token = localStorage.getItem("token")
     if (token) {
-      const decoded: userType = jwtDecode(token)
-      setUser(decoded)
+      try {
+        const decoded: userType = jwtDecode(token)
+        setUser(decoded)
+      } catch (error) {
+        setNotifySessionEnd(true)
+      }
     }
   }
 
   useEffect(() => {
     handleSettingUser()
   }, [])
-  return <userContext.Provider value={{ user, handleLogin, handleSignOut, showAddSong, setShowAddSong }}>{children}</userContext.Provider>
+  return <userContext.Provider value={{ user, handleLogin, notifySessionEnd, handleSignOut, showAddSong, setShowAddSong }}>{children}</userContext.Provider>
 }
 
 export default UserState

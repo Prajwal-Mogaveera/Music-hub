@@ -40,7 +40,8 @@ describe("Login Component", () => {
           handleSignOut: mockHandleSignOut,
           showAddSong,
           setShowAddSong: mockSetShowAddSong,
-          handleLogin: mockHandleLogin
+          handleLogin: mockHandleLogin,
+          notifySessionEnd: false
         }}
       >
         <MemoryRouter>

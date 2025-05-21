@@ -12,6 +12,7 @@ interface contextType {
   handleSignOut: () => boolean
   showAddSong: boolean
   setShowAddSong: (val: boolean) => void
+  notifySessionEnd: boolean
 }
 
 const userContext = createContext<contextType>({
@@ -19,7 +20,8 @@ const userContext = createContext<contextType>({
   handleLogin: () => true,
   handleSignOut: () => true,
   showAddSong: false,
-  setShowAddSong: () => {}
+  setShowAddSong: () => {},
+  notifySessionEnd: false
 })
 
 export default userContext
